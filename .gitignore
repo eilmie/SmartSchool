@@ -30,3 +30,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.gradle/
+target/
+.mvn/
+bin/
+build/
+*.class
+.env
