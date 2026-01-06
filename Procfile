@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar webapp-runner.jar --port $PORT src/main/webapp
+web: java $JAVA_OPTS -jar webapp-runner-10.1.34.0.jar --port $PORT src/main/webapp
