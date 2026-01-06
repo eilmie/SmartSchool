@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Java Getting Started (Maven)
 
 A barebones Java app, which can easily be deployed to Heroku.
@@ -45,3 +46,7 @@ $ heroku open
 For more information about using Java on Heroku, see these Dev Center articles:
 
 - [Java on Heroku](https://devcenter.heroku.com/categories/java)
+=======
+# SmartSchool
+this repository to connect with the heroku
+>>>>>>> 2eb398a5ee0eb6e2c8c3c1f2aa4541a07a235f84
