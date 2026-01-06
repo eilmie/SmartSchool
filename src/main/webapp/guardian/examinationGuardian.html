@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart School System - Examination Guardian</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/homepage.css" />
+    <style>
+      /* Specific Styles for Exam Management */
+      .exam-filters {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+        background: #fdfaf8;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #e6d7cb;
+      }
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .filter-group label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+      }
+
+      .filter-group select {
+        padding: 10px;
+        border: 1px solid #d0d0d0;
+        border-radius: 8px;
+        background: white;
+      }
+
+      .score-input {
+        width: 80px;
+        padding: 8px;
+        text-align: center;
+        border: 1px solid #d0d0d0;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+
+      .grade-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        background: #ffffff;
+        min-width: 40px;
+      }
+
+      .submit-container {
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .btn-primary {
+        background-color: #8c8279;
+        color: white;
+        padding: 12px 35px;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .btn-primary:hover {
+        background-color: #746260;
+      }
+
+      /* Dark mode compatibility for the badge */
+      body.dark-theme .grade-badge {
+        background: #444;
+        color: #fff;
+      }
+      body.dark-theme .exam-filters {
+        background: #2a2a2a;
+        border-color: #444;
+      }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-left">
+        <i class="fas fa-bars menu-toggle-icon" id="menu-toggle"></i>
+        <span>Smart School System</span>
+      </div>
+      <div class="header-right">
+        <div class="profile-area" id="profileBtn">
+          <span class="user-name">Guardian</span>
+          <img
+            src="../assets/image/adminICON.png"
+            alt="Profile"
+            class="profile-image"
+          />
+        </div>
+        <div class="profile-menu" id="profileMenu">
+          <p id="darkToggle"><i class="fas fa-moon"></i> Dark Mode</p>
+          <p id="logoutOption"><i class="fas fa-sign-out-alt"></i> Logout</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+          <li>
+            <a href="guardianHomepage.html" class="menu-item"
+              ><i class="fas fa-home icon"></i>
+              <span class="link-text">Home</span></a
+            >
+          </li>
+        </ul>
+      </aside>
+
+      <main class="content">
+        <div class="breadcrumb-studentProfile">
+          Hi, Guardian <span class="breadcrumb-separator">&gt;</span>
+          <span class="current-page">Student Examination</span>
+        </div>
+        <div class="profile-header">
+          <div class="student-info">STUDENT NAME: ISMID SUMBUL BIN FARIS</div>
+        </div>
+
+        <div class="student-exam-container-card">
+          <div class="student-exam-filter-section">
+            <div class="student-exam-filter-group">
+              <label class="student-exam-label">Exam type</label>
+              <select class="student-exam-dropdown">
+                <option>Peperiksaan Pertengahan Tahun</option>
+              </select>
+            </div>
+            <div class="student-exam-filter-group">
+              <label class="student-exam-label">Year</label>
+              <select class="student-exam-dropdown">
+                <option>2025</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="student-exam-table-viewport">
+            <table class="student-exam-result-table">
+              <thead>
+                <tr>
+                  <th class="student-exam-th-number">No.</th>
+                  <th class="student-exam-th-subject">Name</th>
+                  <th class="student-exam-th-score">Score</th>
+                  <th class="student-exam-th-grade">Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Bahasa Melayu</td>
+                  <td>64</td>
+                  <td>C</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Bahasa Inggeris</td>
+                  <td>88</td>
+                  <td>A</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Matematik</td>
+                  <td>98</td>
+                  <td>A</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Sains</td>
+                  <td>95</td>
+                  <td>A</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Pendidikan Islam</td>
+                  <td>60</td>
+                  <td>C</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Sejarah</td>
+                  <td>44</td>
+                  <td>D</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>Pendidikan Jasmani dan Kesihatan</td>
+                  <td>100</td>
+                  <td>A</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>Bahasa Arab</td>
+                  <td>70</td>
+                  <td>B</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="student-exam-footer-actions">
+          <button
+            class="student-exam-btn-back"
+            onclick="location.href='studentProfile.html'"
+          >
+            BACK
+          </button>
+          <button
+            id="downloadPDF"
+            class="btn-primary"
+            style="margin-left: 10px"
+          >
+            <i class="fas fa-file-pdf"></i> DOWNLOAD PDF
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <div id="logoutModal" class="modal-overlay">
+      <div class="modal-box">
+        <h3>Confirm Logout</h3>
+        <p>Do you want to logout from this account?</p>
+        <div class="modal-buttons">
+          <button class="modal-btn btn-cancel" id="cancelLogout">Cancel</button>
+          <button class="modal-btn btn-reject" id="confirmLogout">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // UI Logic (Sidebar, Profile, Logout)
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      menuToggle.addEventListener("click", () =>
+        sidebar.classList.toggle("collapsed")
+      );
+
+      const profileBtn = document.getElementById("profileBtn");
+      const profileMenu = document.getElementById("profileMenu");
+      profileBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        profileMenu.style.display =
+          profileMenu.style.display === "block" ? "none" : "block";
+      });
+
+      document.addEventListener(
+        "click",
+        () => (profileMenu.style.display = "none")
+      );
+
+      const logoutOption = document.getElementById("logoutOption");
+      const logoutModal = document.getElementById("logoutModal");
+      logoutOption.addEventListener(
+        "click",
+        () => (logoutModal.style.display = "flex")
+      );
+      document
+        .getElementById("cancelLogout")
+        .addEventListener("click", () => (logoutModal.style.display = "none"));
+      document
+        .getElementById("confirmLogout")
+        .addEventListener(
+          "click",
+          () => (window.location.href = "../choice.html")
+        );
+
+      document.getElementById("darkToggle").addEventListener("click", () => {
+        document.body.classList.toggle("dark-theme");
+      });
+
+      // --- PDF Generation Logic ---
+
+      /**
+       * Event listener for the "DOWNLOAD PDF" button.
+       * This script uses the 'html2pdf.js' library to capture a specific
+       * HTML element and convert it into a downloadable PDF document.
+       */
+      document
+        .getElementById("downloadPDF")
+        .addEventListener("click", function () {
+          // 1. Identify the target element to be converted.
+          // We select the card container that holds the exam results table.
+          const element = document.querySelector(
+            ".student-exam-container-card"
+          );
+
+          // 2. Configure the PDF settings.
+          const opt = {
+            margin: 10, // Sets the page margin in millimeters
+            filename: "Student_Result.pdf", // The name of the downloaded file
+            image: { type: "jpeg", quality: 0.98 }, // Quality settings for image rendering
+
+            // html2canvas settings:
+            // 'scale: 2' improves the resolution/clarity of the text in the PDF.
+            // 'useCORS: true' allows loading of external images/assets if needed.
+            html2canvas: { scale: 2, useCORS: true },
+
+            // jsPDF settings:
+            // Defines paper size (A4), units, and orientation.
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          };
+
+          // 3. Execution:
+          // .set(opt) - Applies our configuration.
+          // .from(element) - Takes the specific HTML content.
+          // .save() - Triggers the browser download.
+          html2pdf().set(opt).from(element).save();
+        });
+    </script>
+  </body>
+</html>
