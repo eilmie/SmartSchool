@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar webapp-runner-10.1.34.0.jar --port $PORT --expand-war target/SmartSchool.war
+web: java $JAVA_OPTS -jar webapp-runner-10.1.34.0.jar --port $PORT --expand-war-file target/SmartSchool.war
