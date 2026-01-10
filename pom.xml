@@ -59,11 +59,19 @@
     <build>
         <finalName>SmartSchool</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-            </plugin>
-        </plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.4.0</version>
+            <configuration>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+                <archive>
+                    <manifestEntries>
+                        <Multi-Release>true</Multi-Release>
+                    </manifestEntries>
+                </archive>
+            </configuration>
+        </plugin>
+    </plugins>
     </build>
 </project>
