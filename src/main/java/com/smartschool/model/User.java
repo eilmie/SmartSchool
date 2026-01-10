@@ -1,10 +1,16 @@
 package com.smartschool.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L; // Recommended for Serializable classes
+
     private int userId;
     private String email;
     private String role; 
     private String name; 
+
+    public User() {} // Default constructor
 
     // Getters and Setters
     public int getUserId() { return userId; }
@@ -15,6 +21,7 @@ public class User {
     public void setRole(String role) { this.role = role; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    
     public int getTeacherID() { 
         return this.userId; 
     }
