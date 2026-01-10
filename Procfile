@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar webapp-runner-10.1.34.0.jar --port $PORT --enable-naming --expand-war-file true --scanBootstrapClassPath true target/SmartSchool.war
+web: java $JAVA_OPTS -jar webapp-runner-10.1.34.0.jar --port $PORT --enable-naming --scanBootstrapClassPath target/SmartSchool.war
