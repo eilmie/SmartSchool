@@ -7,6 +7,13 @@
   metadata-complete="false">
   <display-name>SmartSchool</display-name>
   
+  <jsp-config>
+  <taglib>
+    <taglib-uri>jakarta.tags.core</taglib-uri>
+    <taglib-location>/WEB-INF/tlds/c.tld</taglib-location>
+  </taglib>
+</jsp-config>
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.jsp</welcome-file>
