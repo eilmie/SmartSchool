@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dorg.apache.jasper.compiler.TldCache.SCAN_ALL=true -jar webapp-runner-10.1.34.0.jar --port $PORT --enable-naming target/SmartSchool.war
+web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT --enable-naming target/SmartSchool.war

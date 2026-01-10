@@ -8,11 +8,11 @@
   <display-name>SmartSchool</display-name>
   
   <jsp-config>
-  <taglib>
-    <taglib-uri>jakarta.tags.core</taglib-uri>
-    <taglib-location>/WEB-INF/tlds/c.tld</taglib-location>
-  </taglib>
-</jsp-config>
+    <taglib>
+      <taglib-uri>jakarta.tags.core</taglib-uri>
+      <taglib-location>/WEB-INF/lib/taglibs-standard-impl-1.2.5.jar</taglib-location>
+    </taglib>
+  </jsp-config>
   
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
