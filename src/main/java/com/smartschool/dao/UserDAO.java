@@ -20,7 +20,7 @@ public class UserDAO {
 	    User user = null;
 	   
 	    String sql = "SELECT u.*, t.TeacherStatus as TeacherStatus FROM USERS u " +
-	                 "LEFT JOIN TEACHER t ON u.USERID = t.USERID " +
+	                 "LEFT JOIN TEACHER t ON u.userid = t.userid " +
 	                 "WHERE u.UserEmail = ? AND u.PASSWORD = ? AND u.ROLE = ?";
 
 	    try (Connection con = PostgresConnection.getConnection();
@@ -37,7 +37,7 @@ public class UserDAO {
 	            if ("teacher".equalsIgnoreCase(role)) {
 	                if ("approved".equalsIgnoreCase(TeacherStatus)) {
 	                    user = new User();
-	                    user.setUserId(rs.getInt("USERID"));
+	                    user.setUserId(rs.getInt("userid"));
 	                    user.setEmail(rs.getString("UserEmail"));
 	                    user.setRole(role);
 	                    fetchTeacherName(con, user);
@@ -49,7 +49,7 @@ public class UserDAO {
 	            } else {
 	              
 	                user = new User();
-	                user.setUserId(rs.getInt("USERID"));
+	                user.setUserId(rs.getInt("userid"));
 	                user.setEmail(rs.getString("UserEmail"));
 	                user.setRole(role);
 	                user.setName("System Admin");
