@@ -1,4 +1,5 @@
 <%@ page import="com.smartschool.model.User"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%
     // 1. Retrieve the user object from the session
     User currentUser = (User) session.getAttribute("currentUser");

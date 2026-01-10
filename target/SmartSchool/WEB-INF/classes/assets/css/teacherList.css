@@ -1,0 +1,354 @@
+/* =========================================
+   1. GLOBAL RESETS & THEME
+   ========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+/* Dark Mode Support */
+body.dark-theme {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+body.dark-theme .content {
+  background-color: #242424;
+}
+
+body.dark-theme .dashboard-card,
+body.dark-theme .stat-item {
+  background-color: #2d2d2d;
+  border-color: #444;
+  color: white;
+}
+
+body.dark-theme .stat-value,
+body.dark-theme .dashboard-card p,
+body.dark-theme .breadcrumb {
+  color: #eee;
+}
+
+/* =========================================
+   2. LAYOUT COMPONENTS (Header, Sidebar, Main)
+   ========================================= */
+
+/* Header */
+.header {
+  background-color: #8c8279;
+  color: white;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.menu-toggle-icon {
+  margin-right: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.profile-area {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-name {
+  margin-right: 15px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.profile-image {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+/* Sidebar */
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #e6d7cb;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed { width: 70px; }
+.sidebar.collapsed .link-text { display: none; }
+.sidebar.collapsed .menu-item { justify-content: center; padding: 15px 0; }
+.sidebar.collapsed .menu-item .icon { margin-right: 0; font-size: 1.3rem; }
+
+.sidebar-menu { list-style: none; }
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  color: #5a5a5a;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.menu-item:hover { background-color: rgba(0, 0, 0, 0.04); color: #333; }
+.menu-item.active {
+  color: #a855f7;
+  background-color: rgba(168, 85, 247, 0.05);
+  border-left: 4px solid #a855f7;
+}
+
+.menu-item .icon {
+  margin-right: 20px;
+  width: 24px;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #7c7c7c;
+}
+
+/* Main Content Area */
+.content {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.breadcrumb, .breadcrumb-studentProfile {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-separator { margin: 0 15px; color: #aaa; font-weight: normal; }
+.current-page { color: #aaa; }
+
+/* =========================================
+   3. REUSABLE UI ELEMENTS (Cards, Stats, Buttons)
+   ========================================= */
+
+/* Stats & Dashboard Cards */
+.stats-container { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
+
+.stat-item, .card {
+  background: #fff;
+  padding: 20px;
+  flex: 1;
+  min-width: 200px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+}
+
+.dashboard-card {
+  background: #e6d7cb;
+  padding: 40px 20px;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-approve { background-color: #22c55e; color: white; }
+.btn-reject, .btn-red, .modal-btn-delete { background-color: #ef4444; color: white; }
+.btn-cancel, .modal-btn-cancel { background-color: #d1d5db; color: #333; }
+.btn-save-grey { background-color: #b3b3b3; color: #222; border-radius: 8px; }
+
+/* =========================================
+   4. TABLES & DATA ENTRY
+   ========================================= */
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.form-control, .edit-input, .dob-select {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+}
+
+.search-container { position: relative; width: 300px; }
+.search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #888; }
+
+.table-responsive { overflow-x: auto; margin-top: 20px; }
+table, .data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th { background-color: #fdfaf8; padding: 15px; text-align: left; border-bottom: 2px solid #e6d7cb; font-weight: 700; }
+td { padding: 12px 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
+
+/* Action Icons in Table */
+.action-icons-wrapper { display: flex; gap: 8px; }
+.action-btn { width: 32px; height: 32px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; border: 1px solid #ddd; }
+.edit-btn { color: #333; }
+.delete-btn { color: #dc2626; border-color: #f87171; }
+
+/* =========================================
+   5. MODALS & OVERLAYS
+   ========================================= */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box, .beige-modal {
+  background-color: #e6d7cb;
+  padding: 35px;
+  border-radius: 20px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.close-icon { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 20px; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   6. GUARDIAN / STUDENT SPECIFIC STYLES
+   ========================================= */
+.student-card {
+  background: #ffffff;
+  width: 280px;
+  padding: 30px 20px;
+  border-radius: 15px;
+  border: 2px solid #000;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-student-wrapper {
+  width: 220px;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 25px;
+  margin-bottom: 25px;
+}
+
+.student-photo { width: 100%; height: 100%; object-fit: cover; }
+.student-name { font-size: 1rem; color: #444; margin-bottom: 25px; text-transform: uppercase; }
+
+.profile-header { padding: 0 20px 20px 0; font-family: "Times New Roman", Times, serif; }
+.greeting { font-size: 24px; font-weight: bold; }
+.student-info { font-size: 20px; font-weight: bold; text-transform: uppercase; }
+
+/* Notification Toast Styles */
+.notification-toast {
+    visibility: hidden; /* Hidden by default */
+    min-width: 300px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1001; /* On top of everything */
+    left: 50%;
+    top: 30px; /* Position at the top */
+    transform: translateX(-50%);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    font-size: 16px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.5s, top 0.5s;
+}
+
+/* Success Color */
+.notification-toast.success {
+    background-color: #4CAF50; /* Green */
+}
+
+/* Error Color */
+.notification-toast.error {
+    background-color: #f44336; /* Red */
+}
+
+/* Class to show the toast */
+.notification-toast.show {
+    visibility: visible;
+    opacity: 1;
+    top: 50px; /* Slide down effect */
+}

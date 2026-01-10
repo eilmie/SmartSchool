@@ -37,7 +37,7 @@ public class UserDAO {
 	            if ("teacher".equalsIgnoreCase(role)) {
 	                if ("approved".equalsIgnoreCase(TeacherStatus)) {
 	                    user = new User();
-	                    user.setUserId(rs.getInt("USER_ID"));
+	                    user.setUserId(rs.getInt("USERID"));
 	                    user.setEmail(rs.getString("UserEmail"));
 	                    user.setRole(role);
 	                    fetchTeacherName(con, user);
@@ -49,7 +49,7 @@ public class UserDAO {
 	            } else {
 	              
 	                user = new User();
-	                user.setUserId(rs.getInt("USER_ID"));
+	                user.setUserId(rs.getInt("USERID"));
 	                user.setEmail(rs.getString("UserEmail"));
 	                user.setRole(role);
 	                user.setName("System Admin");
