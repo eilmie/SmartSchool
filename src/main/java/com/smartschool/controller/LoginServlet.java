@@ -36,8 +36,8 @@ public class LoginServlet extends HttpServlet {
 	        if ("admin".equalsIgnoreCase(role)) {
 	            // --- ADMIN SUCCESS ---
 	            session.setAttribute("AdminID", user.getUserId());
-	            System.out.println("Success! Redirecting to: admin/adminHomepage.jsp");
-	            response.sendRedirect("admin/adminHomepage.jsp");
+	            System.out.println("Success! Redirecting to: admin/adminHomepage.html");
+	            response.sendRedirect("admin/adminHomepage.html");
 	        } 
 	        else {
 	            // --- TEACHER SUCCESS ---
