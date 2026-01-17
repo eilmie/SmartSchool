@@ -7,6 +7,7 @@ com\smartschool\controller\LoginServlet.class
 com\smartschool\controller\RegisterServlet.class
 com\smartschool\dao\UserDAO.class
 com\smartschool\controller\TeacherListServlet.class
+com\smartschool\model\Guardian.class
 com\smartschool\model\User.class
 com\smartschool\controller\StudentSummaryServlet.class
 com\smartschool\model\Attendance.class

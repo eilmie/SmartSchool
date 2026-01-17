@@ -8,6 +8,7 @@ public class Attendance {
     private String StudIC;
     private String status;
     private String notes;
+    private String mcImage;
 
     // Empty Constructor
     public Attendance() {}
@@ -42,4 +43,7 @@ public class Attendance {
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+    
+    public String getMcImage() { return mcImage; }
+    public void setMcImage(String mcImage) { this.mcImage = mcImage; }
 }

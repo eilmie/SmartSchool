@@ -4,6 +4,14 @@
 <%@ page import="com.smartschool.dao.UserDAO" %>
 <%@ page import="com.smartschool.model.Student" %>
 
+<%
+    List<Student> studentList = (List<Student>) request.getAttribute("studentList");
+    if (studentList == null) {
+        UserDAO dao = new UserDAO();
+        studentList = dao.getAllStudents(); 
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,15 +19,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart School System - Student List</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/studentList.css">
+    
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/studentList.css">
 </head>
 <body>
-
-    <%
-        // 2. Instantiate DAO and Fetch Data
-        UserDAO dao = new UserDAO();
-        List<Student> studentList = dao.getStudentList(null);
-    %>
 
     <header class="header">
         <div class="header-left">
@@ -27,8 +30,10 @@
             <span>Smart School System</span>
         </div>
         <div class="header-right">
-            <span class="user-name">Admin</span>
-            <img src="../assets/image/adminICON.png" alt="Admin Profile" class="profile-image">
+            <div class="profile-area" id="profileBtn">
+                <span class="user-name">Admin</span>
+                <img src="../assets/image/adminICON.png" alt="Admin" class="profile-image">
+            </div>
         </div>
     </header>
 
@@ -44,46 +49,47 @@
         </aside>
 
         <main class="content">
-            <div class="page-header-row">
-                <div class="breadcrumb">
-                    Hi, Admin <span class="breadcrumb-separator">&gt;</span> <span class="current-page">Student</span>
-                </div>
-                <div class="page-label">Student</div>
+            <div class="breadcrumb">
+                Hi, Admin <span class="breadcrumb-separator">&gt;</span> <span class="current-page">Student List</span>
             </div>
 
-            <div class="content-card">
-                
-                <form action="student.jsp" method="get" class="controls-container">
-                    <div class="control-group">
-                        <label>Year</label>
-                        <select class="form-select" name="year">
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                        </select>
-                    </div>
+            <div class="card">
+                <div class="card-header-actions">
+                    <button class="btn-custom btn-new" onclick="window.location.href='StudentListServlet?action=showAddForm'">
+                        <i class="fas fa-plus"></i> New Student
+                    </button>
+                </div>
+                <div class="controls-row">
                     
-                    <div class="search-wrapper">
-                        <input type="text" id="searchInput" onkeyup="searchStudent()" class="search-input" 
-                               placeholder="Search Name or IC...">
-                        <button type="submit" style="background:none; border:none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor:pointer;">
-                            <i class="fas fa-search search-icon"></i>
-                        </button>
-                    </div>
-                </form>
+                    <form action="StudentListServlet" method="get" id="filterForm" class="filter-group">
+                        <label class="filter-label">Filter by Year</label>
+                        <select name="searchYear" class="styled-select" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">All Years</option>
+                            <option value="4" ${param.searchYear == '4' ? 'selected' : ''}>Year 4</option>
+                            <option value="5" ${param.searchYear == '5' ? 'selected' : ''}>Year 5</option>
+                            <option value="6" ${param.searchYear == '6' ? 'selected' : ''}>Year 6</option>
+                        </select>
+                    </form>
 
-                <div class="table-scroll-wrapper">
-                    <table class="data-table student-table">
+
+                    <div class="search-container">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search Name or IC..." onkeyup="searchStudent()">
+                        <i class="fas fa-magnifying-glass"></i>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="studentTable">
                         <thead>
                             <tr>
-                                <th style="width: 5%;">No.</th>
-                                <th style="width: 20%;">Name</th>
-                                <th style="width: 15%;">IC Number</th>
-                                <th style="width: 10%;">Class</th>
-                                <th style="width: 20%;">Address</th>
-                                <th style="width: 8%;">Gender</th>
-                                <th style="width: 12%;">Date of Birth</th>
-                                <th style="width: 5%; text-align: center;">Action</th>
+                                <th style="width: 50px;">No.</th>
+                                <th>Name</th>
+                                <th>IC Number</th>
+                                <th>Class</th>
+                                <th>Address</th>
+                                <th>Gender</th>
+                                <th>Date of Birth</th>
+                                <th style="width: 100px;">Action</th>
                             </tr>
                         </thead>
                         <tbody id="studentTableBody">
@@ -93,15 +99,19 @@
                                     for (Student s : studentList) {
                             %>
                             <tr>
-                                <td class="row-number"><%= count++ %></td>
+                                <td><%= count++ %></td>
                                 <td><%= s.getStudName() %></td>
                                 <td><%= s.getStudIC() %></td>
                                 <td><%= s.getclassName() %></td> 
                                 <td><%= s.getAddress() %></td>
                                 <td><%= s.getStudGender() %></td>
                                 <td><%= s.getDateOfBirth() %></td>
-                                <td class="text-center">
-                                    <i class="fas fa-trash-can icon-delete" onclick="deleteSingleStudent(this, '<%= s.getStudIC() %>')"></i>
+                                <td class="action-cell">
+                                    <div class="action-icons-wrapper">
+                                        <div class="action-btn delete-btn" onclick="deleteSingleStudent(this, '<%= s.getStudIC() %>')">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <%
@@ -109,171 +119,164 @@
                                 } else {
                             %>
                             <tr>
-                                <td colspan="8" style="text-align: center; padding: 20px; color: #666;">
+                                <td colspan="8" style="text-align: center; padding: 20px;">
                                     No students found.
                                 </td>
                             </tr>
                             <%
                                 }
                             %>
-                            <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                         </tbody>
                     </table>
                 </div>
-
                 <div class="card-footer">
-                    <button class="btn-grey" onclick="window.location.href='addStudent.jsp'">new student</button>
-                    <button class="btn-red" onclick="deleteAllStudents()">Delete All</button>
+                    <button class="btn-custom btn-del-all" onclick="deleteAllStudents('${param.searchYear}')">
+                        <i class="fas fa-trash"></i> Delete All ${not empty param.searchYear ? 'Year ' : ''}${param.searchYear}
+                    </button>
                 </div>
             </div>
+            
+            <div id="toastNotification" class="notification-toast">Message</div>
         </main>
     </div>
 
     <div id="deleteConfirmModal" class="modal-overlay">
-    <div class="modal-box">
-        <h3>Are You Sure ?</h3>
-	        <p id="modalMessage">Do you want to delete this student?</p>
-	        
-	        <div id="doubleConfirmContainer" style="display: none; margin-bottom: 20px;">
-	            <p style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">
-	                Type <strong>DELETE</strong> to confirm:
-	            </p>
-	            <input type="text" id="confirmInput" placeholder="DELETE" 
-	                   style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%; text-align: center;">
-	            <p id="inputError" style="color: red; font-size: 0.8rem; display: none; margin-top: 5px;">
-	                Incorrect word. Try again.
-	            </p>
-	        </div>
-	
-	        <div class="modal-buttons">
-	            <button class="modal-btn btn-cancel" onclick="closeModals()">Cancel</button>
-	            <button class="modal-btn btn-red" onclick="confirmDelete()">Delete</button>
-			      </div>
-		    </div>
-		</div>
+        <div class="beige-modal" style="text-align: center;">
+            <span class="close-icon" onclick="closeModals()">&times;</span>
+            
+            <h3>Are You Sure?</h3>
+            <p id="modalMessage" style="color: #5a4a42; margin-bottom: 25px;">Do you want to delete this student?</p>
+            
+            <div id="doubleConfirmContainer" style="display: none; margin-bottom: 20px;">
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">
+                    Type <strong>DELETE</strong> to confirm:
+                </p>
+                <input type="text" id="confirmInput" placeholder="DELETE" autocomplete="off" class="edit-input" style="text-align: center;">
+                <p id="inputError" style="color: red; font-size: 0.8rem; display: none; margin-top: 5px;">
+                    Incorrect word. Try again.
+                </p>
+            </div>
 
-	 <script>
-	    // --- SIDEBAR TOGGLE ---
-	    const toggleButton = document.getElementById('menu-toggle');
-	    const sidebar = document.getElementById('sidebar');
-	    toggleButton.addEventListener('click', () => {
-	        sidebar.classList.toggle('collapsed');
-	    });
-	
-	    // --- SEARCH FUNCTION (Client Side) ---
-	    function searchStudent() {
-	        var input = document.getElementById("searchInput");
-	        var filter = input.value.toUpperCase();
-	        var tableBody = document.getElementById("studentTableBody");
-	        var tr = tableBody.getElementsByTagName("tr");
-	
-	        for (var i = 0; i < tr.length; i++) {
-	            var tdName = tr[i].getElementsByTagName("td")[1]; // Name Column (Index 1)
-	            var tdIC = tr[i].getElementsByTagName("td")[2];   // IC Column (Index 2)
-	
-	            if (tdName || tdIC) {
-	                var nameValue = tdName.textContent || tdName.innerText;
-	                var icValue = tdIC.textContent || tdIC.innerText;
-	
-	                if (nameValue.toUpperCase().indexOf(filter) > -1 || icValue.toUpperCase().indexOf(filter) > -1) {
-	                    tr[i].style.display = "";
-	                } else {
-	                    tr[i].style.display = "none";
-	                }
-	            }
-	        }
-	    }
-	
-	    // --- DELETE LOGIC ---
-	    const confirmModal = document.getElementById('deleteConfirmModal');
-	    const successModal = document.getElementById('successModal');
-	    const modalMessage = document.getElementById('modalMessage');
-	
-	    // New Elements for Double Confirmation
-	    const doubleConfirmContainer = document.getElementById('doubleConfirmContainer');
-	    const confirmInput = document.getElementById('confirmInput');
-	    const inputError = document.getElementById('inputError');
-	
-	    let idToDelete = null;
-	    let isDeleteAll = false;
-	
-	    // 1. Triggered when trash icon is clicked (Single Delete)
-	    function deleteSingleStudent(element, ic) {
-	        isDeleteAll = false;
-	        idToDelete = ic;
-	
-	        // Update UI: Hide the "Type DELETE" input
-	        modalMessage.innerText = "Delete student with IC: " + ic + "?";
-	        doubleConfirmContainer.style.display = 'none'; 
-	        inputError.style.display = 'none';
-	
-	        confirmModal.style.display = 'flex';
-	    }
-	
-	    // 2. Triggered when "Delete All" button is clicked
-	    function deleteAllStudents() {
-	        isDeleteAll = true;
-	
-	        // Update UI: Show the "Type DELETE" input
-	        modalMessage.innerText = "WARNING: This will delete ALL students.";
-	        doubleConfirmContainer.style.display = 'block'; 
-	        confirmInput.value = ""; // Clear previous text
-	        inputError.style.display = 'none'; // Hide previous error
-	        confirmInput.style.border = "1px solid #ccc"; // Reset border color
-	
-	        confirmModal.style.display = 'flex';
-	        confirmInput.focus(); // Auto-focus the input box
-	    }
-	
-	    // 3. Close Modals
-	    function closeModals() {
-	        confirmModal.style.display = 'none';
-	        successModal.style.display = 'none';
-	    }
-	
-	    // 4. CONFIRM DELETE (Updated with Validation)
-	    function confirmDelete() {
-	        if (isDeleteAll) {
-	            // Validation Logic: Check if user typed "DELETE"
-	            if (confirmInput.value !== "DELETE") {
-	                inputError.style.display = 'block'; // Show error message
-	                confirmInput.style.border = "1px solid red"; // Highlight box red
-	                return; // STOP execution
-	            }
-	
-	            // If correct, proceed to Servlet
-	            window.location.href = "StudentListServlet?action=deleteAll";
-	        } else {
-	            // Single delete (No validation needed)
-	            window.location.href = "StudentListServlet?action=delete&studIC=" + idToDelete;
-	        }
-	    }
-	
-	    // 5. CHECK URL STATUS (Crucial for showing success message after reload)
-	    window.onload = function() {
-	        const urlParams = new URLSearchParams(window.location.search);
-	        
-	        if (urlParams.get('status') === 'success') {
-	            document.getElementById('successMessage').innerText = "Deletion Successful!";
-	            successModal.style.display = 'flex';
-	            
-	            // Auto hide after 2 seconds
-	            setTimeout(() => {
-	                successModal.style.display = 'none';
-	                // Remove param from URL so it doesn't show again on refresh
-	                window.history.replaceState({}, document.title, window.location.pathname);
-	            }, 2000);
-	        } else if (urlParams.get('status') === 'fail') {
-	             alert("Error: Could not delete data. Check console or database.");
-	        }
-	    }
-	
-	    // Close modal if clicking outside
-	    window.onclick = function(event) {
-	        if (event.target == confirmModal || event.target == successModal) {
-	            closeModals();
-	        }
-	    }
-	</script>
+            <div class="modal-buttons">
+                <button type="button" class="btn-save-grey" onclick="closeModals()" style="background-color: #ccc;">Cancel</button>
+                <button type="button" class="btn-save-grey" onclick="confirmDelete()" style="background-color: #d9534f;">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+        }
+
+        // Search
+        function searchStudent() {
+            var input = document.getElementById("searchInput");
+            var filter = input.value.toUpperCase();
+            var tableBody = document.getElementById("studentTableBody");
+            var tr = tableBody.getElementsByTagName("tr");
+
+            for (var i = 0; i < tr.length; i++) {
+                var tdName = tr[i].getElementsByTagName("td")[1];
+                var tdIC = tr[i].getElementsByTagName("td")[2];
+
+                if (tdName || tdIC) {
+                    var nameValue = tdName.textContent || tdName.innerText;
+                    var icValue = tdIC.textContent || tdIC.innerText;
+                    if (nameValue.toUpperCase().indexOf(filter) > -1 || icValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // Delete Logic
+        const confirmModal = document.getElementById('deleteConfirmModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const doubleConfirmContainer = document.getElementById('doubleConfirmContainer');
+        const confirmInput = document.getElementById('confirmInput');
+        const inputError = document.getElementById('inputError');
+
+        let idToDelete = null;
+        let isDeleteAll = false;
+        let yearToDelete = "";
+
+        function deleteSingleStudent(element, ic) {
+            isDeleteAll = false;
+            idToDelete = ic;
+            modalMessage.innerText = "Delete student with IC: " + ic + "?";
+            doubleConfirmContainer.style.display = 'none'; 
+            inputError.style.display = 'none';
+            confirmModal.style.display = 'flex';
+        }
+
+        function deleteAllStudents(year) {
+            isDeleteAll = true;
+            yearToDelete = year;
+            if (year && year !== "") {
+                modalMessage.innerText = "WARNING: This will inactive ALL Year " + year + " students.";
+            } else {
+                modalMessage.innerText = "WARNING: This will inactive EVERY student in the school.";
+            }
+            doubleConfirmContainer.style.display = 'block'; 
+            confirmInput.value = "";
+            inputError.style.display = 'none';
+            confirmInput.style.border = "1px solid #d4c4b7";
+            confirmModal.style.display = 'flex';
+            confirmInput.focus();
+        }
+
+        function closeModals() {
+            confirmModal.style.display = 'none';
+        }
+
+        function confirmDelete() {
+            if (isDeleteAll) {
+                if (confirmInput.value !== "DELETE") {
+                    inputError.style.display = 'block';
+                    confirmInput.style.border = "1px solid red"; 
+                    return; 
+                }
+                var url = "StudentListServlet?action=deleteAll";
+                if (yearToDelete && yearToDelete !== "") {
+                    url += "&year=" + yearToDelete;
+                }
+                window.location.href = url;
+            } else {
+                window.location.href = "StudentListServlet?action=delete&studIC=" + idToDelete;
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == confirmModal) closeModals();
+        }
+
+        // Toast
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            const toast = document.getElementById("toastNotification");
+
+            if (status) {
+                let message = "";
+                let type = "";
+                if (status === 'success') { message = "✅ Deletion Successful!"; type = "success"; }
+                else if (status === 'fail') { message = "❌ Action Failed."; type = "error"; }
+
+                if (message) {
+                    toast.innerText = message;
+                    toast.className = "notification-toast " + type; 
+                    toast.classList.add("show");
+                    setTimeout(function(){ toast.classList.remove("show"); }, 3000);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            }
+        };
+    </script>
 </body>
 </html>
