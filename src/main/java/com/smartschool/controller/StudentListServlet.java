@@ -65,8 +65,6 @@ public class StudentListServlet extends HttpServlet {
         String yearStr = request.getParameter("searchYear");
         List<Student> list;
 
-        // System.out.println("DEBUG: Year parameter received: " + yearStr);
-        
         if (yearStr != null && !yearStr.isEmpty()) {
             int year = Integer.parseInt(yearStr);
             list = userDAO.getStudentsByYear(year); 
@@ -74,8 +72,12 @@ public class StudentListServlet extends HttpServlet {
             list = userDAO.getAllStudents(); 
         }
 
-        request.setAttribute("studentList", list);
-        request.getRequestDispatcher("student.jsp").forward(request, response);
+        // --- NEW JSON LOGIC ---
+        String json = new com.google.gson.Gson().toJson(list);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
+        // ----------------------
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -178,9 +180,9 @@ public class StudentListServlet extends HttpServlet {
         }
 
         if (isDeleted) {
-            response.sendRedirect("student.jsp?status=success");
+            response.sendRedirect("student.html?status=success");
         } else {
-            response.sendRedirect("student.jsp?status=fail");
+            response.sendRedirect("student.html?status=fail");
         }
     }
 
@@ -200,13 +202,13 @@ public class StudentListServlet extends HttpServlet {
         }
 
         if (isDeleted) {
-            String redirectUrl = "student.jsp?status=success";
+            String redirectUrl = "student.html?status=success";
             if (yearStr != null && !yearStr.isEmpty()) {
                 redirectUrl += "&searchYear=" + yearStr;
             }
             response.sendRedirect(redirectUrl);
         } else {
-            response.sendRedirect("student.jsp?status=fail");
+            response.sendRedirect("student.html?status=fail");
         }
     }
 }
