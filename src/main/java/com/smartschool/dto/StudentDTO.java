@@ -9,7 +9,7 @@ public class StudentDTO {
 	@JsonProperty("StudIC")
     private String studIC;
 	
-    @JsonProperty("ClassName")
+    @JsonProperty("className")
     private String className;
 
     @JsonProperty("StudName")
@@ -23,13 +23,13 @@ public class StudentDTO {
 	 this.className = className;
     }
     
-    public String getStudentId() { return studIC; }
-    public void setStudentId(String studIC) { this.studIC = studIC; }
+    public String getStudIC() { return studIC; }
+    public void setStudIC(String studIC) { this.studIC = studIC; }
     
-    public String getClassName() { return className; }
-    public void setClassName(String className) { this.className = className; }
+    public String getclassName() { return className; }
+    public void setclassName(String className) { this.className = className; }
     
     public String getStudentName() { return studName; }
-    public void setStudentName(String studName) { this.studName = studName; }
+    public void setStudName(String studName) { this.studName = studName; }
 
 }

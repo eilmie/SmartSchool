@@ -1,5 +1,5 @@
 server:
-   port: 8080
+  port: 8080
 
 spring:
   application:
@@ -12,8 +12,13 @@ spring:
           predicates:
             - Path=/admin/StudentListServlet/**
           filters:
+            # Flexible rewrite: Handles both /admin/StudentListServlet and /admin/StudentListServlet?action=list
             - RewritePath=/admin/StudentListServlet(?<remaining>.*), /api/students$\{remaining}
+
 eureka:
   client:
     service-url:
-      defaultZone: https://your-eureka-app-name.herokuapp.com/eureka/
+      # REPLACE 'your-eureka-app-name' with your actual Heroku Eureka app name
+      defaultZone: https://radiant-taiga-56597.herokuapp.com/eureka/
+    register-with-eureka: true
+    fetch-registry: true
