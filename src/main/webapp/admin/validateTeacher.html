@@ -97,11 +97,11 @@
                     data.forEach((t, i) => {
                         tbody.innerHTML += `<tr>
                             <td>${i + 1}</td>
-                            <td>${t.teacherName || 'No Name Found'}</td> 
+                            <td>${t.TeacherName || 'No Name Found'}</td> 
                             <td>${t.certNumber}</td>
                             <td class="action-buttons">
-                                <button class="btn btn-reject" onclick="openPopup(${t.teacherID}, 'reject')">Reject</button>
-                                <button class="btn btn-approve" onclick="openPopup(${t.teacherID}, 'approve')">Approve</button>
+                                <button class="btn btn-reject" onclick="openPopup(${t.TeacherID}, 'reject')">Reject</button>
+                                <button class="btn btn-approve" onclick="openPopup(${t.TeacherID}, 'approve')">Approve</button>
                             </td>
                         </tr>`;
                     });
@@ -121,8 +121,8 @@
         }
 
         [cite_start]// 3. POPUP LOGIC [cite: 151-161]
-        function openPopup(teacherId, action) {
-            currentRowId = teacherId;
+        function openPopup(TeacherId, action) {
+            currentRowId = TeacherId;
             currentAction = action;
             document.getElementById('confirmModal').style.display = 'flex';
             if (action === 'approve') {

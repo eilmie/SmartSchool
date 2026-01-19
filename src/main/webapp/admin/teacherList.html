@@ -108,12 +108,12 @@
                         tbody.innerHTML += `
                             <tr>
                                 <td>${i + 1}</td>
-                                <td>${t.teacherName}</td>
+                                <td>${t.TeacherName}</td>
                                 <td>${t.certNumber}</td>
-                                <td>${t.teacherEmail}</td>
-                                <td>${t.teacherPhoneNum}</td>
+                                <td>${t.TeacherEmail}</td>
+                                <td>${t.TeacherPhoneNum}</td>
                                 <td class="action-cell">
-                                    ${status === 'ACTIVE' ? `
+                                    ${Status === 'ACTIVE' ? `
                                         <div class="action-icons-wrapper">
                                             <div class="action-btn edit-btn" onclick="openEditModal('${t.teacherID}', '${t.teacherName}', '${t.teacherPhoneNum}')">
                                                 <i class="fa-regular fa-pen-to-square"></i>
