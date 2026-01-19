@@ -10,12 +10,9 @@ spring:
         - id: student-service
           uri: lb://STUDENT-SERVICE
           predicates:
-            - Path=/api/students/**
-        - id: class-service
-          uri: lb://CLASS-SERVICE
-          predicates:
-            - Path=/api/classes/**
-
+            - Path=/admin/StudentListServlet/**
+          filters:
+            - RewritePath=/admin/StudentListServlet(?<remaining>.*), /api/students$\{remaining}
 eureka:
   client:
     service-url:

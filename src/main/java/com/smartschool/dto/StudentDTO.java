@@ -15,9 +15,9 @@ public class StudentDTO {
     @JsonProperty("StudName")
     private String studName;
    
-
+    public StudentDTO() {}
     // Getters and Setters...
-    public void Student(String studIC, String studName, String className) {
+    public StudentDTO(String studIC, String studName, String className) {
 	 this.studIC = studIC;
 	 this.studName = studName;
 	 this.className = className;
