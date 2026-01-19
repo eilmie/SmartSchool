@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="jakarta.servlet.http.*, jakarta.servlet.*" %>
 <%@ page import="java.util.*, java.util.Calendar" %>
 <%@ page import="com.smartschool.dao.UserDAO"%>
 <%@ page import="com.smartschool.model.Teacher"%>
