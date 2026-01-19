@@ -12,6 +12,7 @@ import com.smartschool.model.TeacherAssign;
 import com.smartschool.model.User;
 import com.smartschool.model.Guardian;
 import com.smartschool.model.Subject;
+import com.smartschool.util.OracleDBConnection;
 import com.smartschool.util.PostgresConnection;
 import java.text.SimpleDateFormat;
 
@@ -712,6 +713,28 @@ public class UserDAO {
 	    } catch (Exception e) { e.printStackTrace(); }
 	    return list;
 	}
+	
+	public List<Teacher> getAvailableTeachers() {
+	    List<Teacher> teachers = new ArrayList<>();
+	    String sql = "SELECT * FROM TEACHER " +
+	                 "WHERE TEACHER_ID NOT IN (SELECT TEACHER_ID FROM CLASSROOM WHERE TEACHER_ID IS NOT NULL) " +
+	                 "AND STATUS = 'approved'"; 
+
+	    try (Connection conn = OracleDBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql);
+	         ResultSet rs = ps.executeQuery()) {
+	        
+	        while (rs.next()) {
+	            Teacher t = new Teacher();
+	            t.setTeacherID(rs.getInt("TEACHER_ID"));
+	            t.setTeacherName(rs.getString("TEACHER_NAME"));
+	            teachers.add(t);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return teachers;
+	} 
 	
 	public List<Teacher> getApprovedTeachers() {
 	    List<Teacher> list = new ArrayList<>();

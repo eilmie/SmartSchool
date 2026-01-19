@@ -118,13 +118,22 @@
             }
         }
 
-        function filterClassDropdown() {
-            var level = document.getElementById("yearSelect").value;
-            var options = document.getElementById("classSelect").options;
-            for (var i = 1; i < options.length; i++) {
-                var classLevel = options[i].getAttribute("data-level");
-                options[i].style.display = (level === "" || classLevel === level) ? "block" : "none";
-                options[i].disabled = (level !== "" && classLevel !== level);
+        function extractDateFromIC() {
+            const icInput = document.getElementById("studIC"); // 
+            const dobInput = document.getElementById("dob"); // 
+            let val = icInput.value.replace(/[^0-9]/g, ''); // [cite: 111]
+
+            if (val.length >= 6) {
+                let yy = val.substring(0, 2); // [cite: 112]
+                let mm = val.substring(2, 4); // [cite: 112]
+                let dd = val.substring(4, 6); // [cite: 112]
+
+                // Logic to determine century [cite: 113]
+                let prefix = (parseInt(yy) > 30) ? "19" : "20"; 
+                let fullYear = prefix + yy; // [cite: 113]
+                
+                // Final format must be YYYY-MM-DD for HTML5 date inputs [cite: 114]
+                dobInput.value = `${fullYear}-${mm}-${dd}`; 
             }
         }
 
