@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart School System - Validate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/validate.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <i class="fas fa-bars menu-toggle-icon" id="menu-toggle"></i> 
+            <span>Smart School System</span>
+        </div>
+        <div class="header-right">
+            <div class="profile-area" id="profileBtn">
+                <span class="user-name">Admin</span> 
+                <img src="/assets/image/adminICON.png" alt="Admin Profile" class="profile-image">
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar" id="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="adminHomepage.html" class="menu-item"><i class="fas fa-home icon"></i> <span class="link-text">Home</span></a></li>
+                <li><a href="classList.html" class="menu-item"><i class="fas fa-chalkboard icon"></i> <span class="link-text">Class</span></a></li>
+                <li><a href="student.html" class="menu-item"><i class="fas fa-user-graduate icon"></i> <span class="link-text">Student</span></a></li>
+                <li><a href="validateTeacher.html" class="menu-item active"><i class="fas fa-user-check icon"></i> <span class="link-text">Validate</span></a></li>
+                <li><a href="teacherList.html" class="menu-item"><i class="fas fa-users-rectangle icon"></i> <span class="link-text">Teacher List</span></a></li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            <div class="breadcrumb">
+                Hi, Admin <span class="breadcrumb-separator">&gt;</span> <span class="current-page">Validate</span>
+            </div>
+
+            <div class="table-box">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="col-no">No.</th>
+                            <th class="col-name">Name</th>
+                            <th class="col-cert">Certificate Number</th>
+                            <th class="col-status">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 id="modalTitle">Are You Sure?</h3>
+            <p id="modalMessage">Do you want to approve this teacher?</p>
+            <div id="hierarchySection" class="hierarchy-box" style="display:none;">
+                <label>Assign Role:</label>
+                <select id="roleSelect" class="form-select" onchange="toggleSupervisorView(this.value)">
+                    <option value="standard">Standard Teacher</option>
+                    <option value="head">Head of Subject</option>
+                </select>
+                <div id="supervisorDiv" style="margin-top:10px;">
+                    <label>Report To (Head of Subject):</label>
+                    <select id="headTeacherId" class="form-select">
+                        <option value="0">-- Select Teacher --</option>
+                        </select>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-cancel" onclick="closePopup()">Cancel</button>
+                <button id="confirmBtn" class="modal-btn" onclick="confirmAction()">Approve</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentRowId = null;
+        let currentAction = null;
+
+        window.onload = function() {
+            loadPendingTeachers();
+            loadSupervisors();
+        };
+
+        [cite_start]// 1. DATA LOADER: Fetches pending data from server [cite: 131, 137]
+        function loadPendingTeachers() {
+            fetch('/ValidationServlet?action=getPending')
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById("pendingTableBody");
+                    tbody.innerHTML = data.length ? "" : '<tr><td colspan="4" style="text-align: center;">No pending registrations found.</td></tr>';
+                    data.forEach((t, i) => {
+                        tbody.innerHTML += `<tr>
+                            <td>${i + 1}</td>
+                            <td>${t.teacherName}</td>
+                            <td>${t.certNumber}</td>
+                            <td class="action-buttons">
+                                <button class="btn btn-reject" onclick="openPopup(${t.teacherID}, 'reject')">Reject</button>
+                                <button class="btn btn-approve" onclick="openPopup(${t.teacherID}, 'approve')">Approve</button>
+                            </td>
+                        </tr>`;
+                    });
+                });
+        }
+
+        [cite_start]// 2. SUPERVISOR LOADER: Fetches existing Heads of Subject [cite: 140]
+        function loadSupervisors() {
+            fetch('/ValidationServlet?action=getHeads')
+                .then(res => res.json())
+                .then(data => {
+                    const select = document.getElementById("headTeacherId");
+                    data.forEach(h => {
+                        select.innerHTML += `<option value="${h.teacherID}">${h.teacherName}</option>`;
+                    });
+                });
+        }
+
+        [cite_start]// 3. POPUP LOGIC [cite: 151-161]
+        function openPopup(teacherId, action) {
+            currentRowId = teacherId;
+            currentAction = action;
+            document.getElementById('confirmModal').style.display = 'flex';
+            if (action === 'approve') {
+                document.getElementById('modalTitle').innerText = "Approve Teacher";
+                document.getElementById('hierarchySection').style.display = 'block';
+                document.getElementById('confirmBtn').innerText = "Confirm";
+            } else {
+                document.getElementById('modalTitle').innerText = "Reject Teacher";
+                document.getElementById('hierarchySection').style.display = 'none';
+                document.getElementById('confirmBtn').innerText = "Reject";
+            }
+        }
+
+        function toggleSupervisorView(role) {
+            document.getElementById('supervisorDiv').style.display = (role === 'head') ? 'none' : 'block';
+        }
+
+        function confirmAction() {
+            const headId = document.getElementById('headTeacherId').value;
+            const role = document.getElementById('roleSelect').value;
+            const finalHeadId = (role === 'head' ? "0" : headId);
+            window.location.href = `/ValidationServlet?userId=${currentRowId}&action=${currentAction}&headId=${finalHeadId}`;
+        }
+
+        function closePopup() { document.getElementById('confirmModal').style.display = 'none'; }
+    </script>
+</body>
+</html>

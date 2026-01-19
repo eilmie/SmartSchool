@@ -2,6 +2,7 @@ package com.smartschool.controller;
 
 import java.io.IOException;
 
+
 import java.util.List;
 
 import com.smartschool.dao.UserDAO;
@@ -99,9 +100,13 @@ public class StudentListServlet extends HttpServlet {
     private void showAddStudentForm(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        List<Classroom> classList = userDAO.getAllClasses();
-        request.setAttribute("classList", classList);
-        request.getRequestDispatcher("addStudent.jsp").forward(request, response);
+    	List<Classroom> classList = userDAO.getAllClasses();
+        
+        // Send the class list as JSON so the HTML page can build the dropdown
+        String json = new com.google.gson.Gson().toJson(classList);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
     }
 
     /**
@@ -165,7 +170,7 @@ public class StudentListServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("student.jsp?status=error");
+            response.sendRedirect("student.html?status=error");
         }
     }
 
