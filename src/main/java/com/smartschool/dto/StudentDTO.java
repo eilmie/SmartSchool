@@ -23,13 +23,13 @@ public class StudentDTO {
 	 this.className = className;
     }
     
-    public String getStudIC() { return studIC; }
-    public void setStudIC(String studIC) { this.studIC = studIC; }
+    public String getStudentId() { return studIC; }
+    public void setStudentId(String studIC) { this.studIC = studIC; }
     
-    public String getclassName() { return className; }
-    public void setclassName(String className) { this.className = className; }
+    public String getClassName() { return className; }
+    public void setClassName(String className) { this.className = className; }
     
-    public String getStudName() { return studName; }
-    public void setStudName(String studName) { this.studName = studName; }
+    public String getStudentName() { return studName; }
+    public void setStudentName(String studName) { this.studName = studName; }
 
 }

@@ -21,9 +21,9 @@ public class StudentController {
         // Convert Model to DTO for the undisrupted interface
         return students.stream().map(s -> {
             StudentDTO dto = new StudentDTO();
-            dto.setStudIC(s.getStudIC());
-            dto.setStudName(s.getStudName());
-            dto.setclassName("Fetching..."); // Placeholder for Class Microservice
+            dto.setStudentId(s.getStudIC());
+            dto.setStudentName(s.getStudName());
+            dto.setClassName("Fetching..."); // Placeholder for Class Microservice
             return dto;
         }).collect(Collectors.toList());
     }
