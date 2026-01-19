@@ -163,9 +163,9 @@ public class StudentListServlet extends HttpServlet {
 
             if (isAdded) {
                 // Pass the year back so the user stays on the same list view
-                response.sendRedirect("student.jsp?searchYear=" + studYear + "&status=successAdd");
+                response.sendRedirect("addStudent.html?status=successAdd");
             } else {
-                response.sendRedirect("StudentListServlet?action=showAddForm&status=fail");
+                response.sendRedirect("addStudent.html?status=fail");
             }
 
         } catch (Exception e) {

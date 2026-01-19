@@ -92,7 +92,7 @@
     <script>
         // 1. DATA LOADER: Fetches classrooms from server
         window.onload = function() {
-            fetch('/GetClassesServlet')
+            fetch('/admin/StudentListServlet?action=showAddForm')
                 .then(response => response.json())
                 .then(data => {
                     const classSelect = document.getElementById('classSelect');

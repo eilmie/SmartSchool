@@ -97,7 +97,7 @@
                     data.forEach((t, i) => {
                         tbody.innerHTML += `<tr>
                             <td>${i + 1}</td>
-                            <td>${t.teacherName}</td>
+                            <td>${t.teacherName || 'No Name Found'}</td> 
                             <td>${t.certNumber}</td>
                             <td class="action-buttons">
                                 <button class="btn btn-reject" onclick="openPopup(${t.teacherID}, 'reject')">Reject</button>
