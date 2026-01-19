@@ -16,6 +16,7 @@ com\smartschool\util\OracleDBConnection.class
 com\smartschool\model\Examination.class
 com\smartschool\model\Teacher.class
 com\smartschool\controller\ExamServlet.class
+com\smartschool\ServletInitializer.class
 com\smartschool\controller\AttendanceServlet.class
 com\smartschool\util\PostgresConnection.class
 com\smartschool\dto\StudentDTO.class
@@ -23,5 +24,6 @@ com\smartschool\controller\RegisterServlet.class
 com\smartschool\dao\UserDAO.class
 com\smartschool\model\User.class
 com\smartschool\model\Attendance.class
+com\smartschool\SmartSchoolApplication.class
 com\smartschool\controller\AdminStatsServlet.class
 com\smartschool\controller\ValidationServlet.class
