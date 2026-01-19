@@ -17,6 +17,7 @@ com\smartschool\model\Teacher.class
 com\smartschool\controller\ExamServlet.class
 com\smartschool\controller\AttendanceServlet.class
 com\smartschool\util\PostgresConnection.class
+com\smartschool\dto\StudentDTO.class
 com\smartschool\controller\RegisterServlet.class
 com\smartschool\dao\UserDAO.class
 com\smartschool\model\User.class
