@@ -1,24 +1,41 @@
 package com.smartschool.model;
 
+<<<<<<< HEAD
+=======
+import java.sql.Date;
+
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
 /**
  * Model class representing a Student based on the database schema.
  */
 public class Student {
     private String studIC;
     private String studName;
+<<<<<<< HEAD
     private String studYear;
     private String dateOfBirth;
+=======
+    private int studYear;
+    private Date dateOfBirth;
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
     private String address;
     private String studGender;
     private String guardianIC;
     private int classId; // Foreign key used to link to the Teacher's class
     private String className;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
     // Empty Constructor
     public Student() {}
 
     // Constructor with all fields
+<<<<<<< HEAD
     public Student(String studIC, String studName, String studYear, String dateOfBirth, 
+=======
+    public Student(String studIC, String studName, int studYear, Date dateOfBirth, 
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
                    String address, String studGender, String guardianIC, int classId, String className) {
         this.studIC = studIC;
         this.studName = studName;
@@ -38,11 +55,19 @@ public class Student {
     public String getStudName() { return studName; }
     public void setStudName(String studName) { this.studName = studName; }
 
+<<<<<<< HEAD
     public String getStudYear() { return studYear; }
     public void setStudYear(String studYear) { this.studYear = studYear; }
 
     public String getDateOfBirth() { return dateOfBirth; }
     public void setDateOfBirth(String dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+=======
+    public int getStudYear() { return studYear; }
+    public void setStudYear(int studYear) { this.studYear = studYear; }
+
+    public Date getDateOfBirth() { return dateOfBirth; }
+    public void setDateOfBirth(Date dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
 
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }

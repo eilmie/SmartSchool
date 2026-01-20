@@ -1,3 +1,8 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
 encoding//src/main/webapp/teacher/attendance.jsp=UTF-8
+=======
+encoding//src/main/java=UTF-8
+encoding//src/main/resources=UTF-8
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
 encoding/<project>=UTF-8

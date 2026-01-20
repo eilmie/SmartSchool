@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart School System - Login</title>
+    <link rel="stylesheet" href="../assets/css/login.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- LEFT SIDE -->
+      <div class="left-panel">
+        <p><a class="home-link" href="../choice.html">← Back to Selection</a></p>
+
+        <div class="title-logo">
+          <span class="system-title">Smart</span>
+          <img
+            src="../assets/image/sksmLOGO.webp"
+            alt="School Logo"
+            class="school-logo"
+          />
+        </div>
+
+        <p class="welcome-text">Greetings, Guardian!</p>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="login-box">
+        <h2>Log in to Smart School System</h2>
+
+        <form action="guardianHomepage.html" method="GET">
+          <div class="input-group">
+            <input type="email" placeholder="Enter your email" />
+          </div>
+
+          <div class="input-group password-group">
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+            />
+            <span id="togglePassword" class="toggle-icon">👁️</span>
+          </div>
+
+          <button type="submit" class="login-button">Log In</button>
+        </form>
+
+        <a href="registerGuardian.html" class="register-link"
+          >Register new account</a
+        >
+      </div>
+    </div>
+
+    <script src="login.js"></script>
+  </body>
+</html>

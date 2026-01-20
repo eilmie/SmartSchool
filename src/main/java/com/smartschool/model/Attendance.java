@@ -8,6 +8,10 @@ public class Attendance {
     private String StudIC;
     private String status;
     private String notes;
+<<<<<<< HEAD
+=======
+    private String mcImage;
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
 
     // Empty Constructor
     public Attendance() {}
@@ -42,4 +46,10 @@ public class Attendance {
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+<<<<<<< HEAD
+=======
+    
+    public String getMcImage() { return mcImage; }
+    public void setMcImage(String mcImage) { this.mcImage = mcImage; }
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
 }

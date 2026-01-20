@@ -1,13 +1,27 @@
 package com.smartschool.model;
 
+<<<<<<< HEAD
 public class Teacher {
+=======
+import java.util.List;
+
+public class Teacher extends User {
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
     private int TeacherID;
     private int userID;
     private String TeacherName;
     private String certNumber;
     private String TeacherPhoneNum;
+<<<<<<< HEAD
     private String TeacherStatus;
     private String TeacherEmail;
+=======
+    private String teacherRole;
+    private String TeacherEmail;
+    private String Status;
+    private String Password;
+    private List<String> assignedSubjects;
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
 
     // Getters and Setters
     public int getTeacherID() { return TeacherID; }
@@ -23,6 +37,7 @@ public class Teacher {
     public void setCertNumber(String certNumber) { this.certNumber = certNumber; }
     
     public String getTeacherPhoneNum() { return TeacherPhoneNum; }
+<<<<<<< HEAD
     public void setTeacherPhoneNum(String TeacherPhoneNum) { this.TeacherPhoneNum = TeacherPhoneNum; }
     
     public String getTeacherStatus() { return TeacherStatus; }
@@ -30,4 +45,22 @@ public class Teacher {
     
     public String getTeacherEmail() { return TeacherEmail; }
     public void setTeacherEmail(String TeacherEmail) { this.TeacherEmail = TeacherEmail; }
+=======
+    public void setTeacherPhoneNum(String teacherPhoneNum) { this.TeacherPhoneNum = teacherPhoneNum; }
+    
+    public String getTeacherRole() { return teacherRole; }
+    public void setTeacherRole(String teacherRole) { this.teacherRole = teacherRole; }
+    
+    public String getStatus() { return Status; }
+    public void setStatus(String Status) { this.Status = Status; }
+    
+    public String getTeacherEmail() { return TeacherEmail; }
+    public void setTeacherEmail(String TeacherEmail) { this.TeacherEmail = TeacherEmail; }
+    
+    public String getPasword() { return Password; }
+    public void setPassword(String Password) { this.Password = Password; }
+    
+    public List<String> getAssignedSubjects() { return assignedSubjects; }
+    public void setAssignedSubjects(List<String> assignedSubjects) { this.assignedSubjects = assignedSubjects; }
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
 }

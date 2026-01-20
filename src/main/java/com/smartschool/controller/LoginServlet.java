@@ -2,7 +2,10 @@ package com.smartschool.controller;
 
 import java.io.IOException;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -37,8 +40,13 @@ public class LoginServlet extends HttpServlet {
 	        if ("admin".equalsIgnoreCase(role)) {
 	            // --- ADMIN SUCCESS ---
 	            session.setAttribute("AdminID", user.getUserId());
+<<<<<<< HEAD
 	            System.out.println("Success! Redirecting to: admin/adminHomepage.jsp");
 	            response.sendRedirect("admin/adminHomepage.jsp");
+=======
+	            System.out.println("Success! Redirecting to: admin/adminHomepage.html");
+	            response.sendRedirect("admin/adminHomepage.html");
+>>>>>>> 07976d6054e80bb0696d5918da813aaa3a934167
 	        } 
 	        else {
 	            // --- TEACHER SUCCESS ---
