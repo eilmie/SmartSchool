@@ -274,7 +274,7 @@
 
             teachers.forEach(t => {
                 const opt1 = document.createElement('option');
-                opt1.value = t.teacherID || t.TeacherID;
+                opt1.value = t.teacherId || t.teacherID || t.TeacherId || t.TeacherID;
                 opt1.textContent = t.teacherName || t.TeacherName;
                 addSelect.appendChild(opt1);
 
