@@ -1,8 +1,13 @@
+server:
+  port: 8080
+
 spring:
+  application:
+    name: gateway-service
   cloud:
     gateway:
       routes:
-        # 1. Existing Route (Microservice List) - KEEPS REWRITING
+        # 1. Microservice API (Keep this specifically for your new Spring Boot logic)
         - id: student-list-service
           uri: lb://STUDENT-SERVICE
           predicates:
@@ -10,10 +15,23 @@ spring:
           filters:
             - RewritePath=/admin/StudentListServlet(?<remaining>.*), /api/students$\{remaining}
 
-        # 2. NEW ROUTE (Monolith Add) - NO REWRITE
-        - id: student-add-monolith
+        # 2. LEGACY ADMIN PAGES (The "Catch-All" Fix)
+        # This allows manageAttendance.html, class.html, and AddStudentServlet to work!
+        - id: legacy-admin-pages
           uri: lb://STUDENT-SERVICE
           predicates:
-            - Path=/admin/AddStudentServlet/**
-          # Important: No RewritePath filter here! 
-          # This ensures the request hits the @WebServlet("/admin/AddStudentServlet") we just added.
+            - Path=/admin/**
+
+        # 3. STATIC ASSETS (Fixes the White Screen)
+        # This allows CSS, Images, and JS to load.
+        - id: static-assets
+          uri: lb://STUDENT-SERVICE
+          predicates:
+            - Path=/assets/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: https://radiant-taiga-56597.herokuapp.com/eureka/
+    register-with-eureka: true
+    fetch-registry: true
