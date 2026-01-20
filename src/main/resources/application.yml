@@ -32,6 +32,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: https://radiant-taiga-56597.herokuapp.com/eureka/
+      defaultZone: https://radiant-taiga-56597-9914cf714542.herokuapp.com/eureka/
     register-with-eureka: true
     fetch-registry: true
