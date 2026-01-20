@@ -7,18 +7,24 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: student-service
+        # Route for the new Student List Microservice
+        - id: student-list-service
           uri: lb://STUDENT-SERVICE
           predicates:
             - Path=/admin/StudentListServlet/**
           filters:
-            # Flexible rewrite: Handles both /admin/StudentListServlet and /admin/StudentListServlet?action=list
             - RewritePath=/admin/StudentListServlet(?<remaining>.*), /api/students$\{remaining}
+
+        # NEW ROUTE: For your original Add Student Monolith Servlet
+        - id: student-add-monolith
+          uri: lb://STUDENT-SERVICE
+          predicates:
+            - Path=/admin/AddStudentServlet/**
+          # No RewritePath filter here because it needs to hit the real Servlet name
 
 eureka:
   client:
     service-url:
-      # REPLACE 'your-eureka-app-name' with your actual Heroku Eureka app name
       defaultZone: https://radiant-taiga-56597.herokuapp.com/eureka/
     register-with-eureka: true
     fetch-registry: true
