@@ -1,135 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart School System - Guardian Home</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="../assets/css/validate.css" />
-  </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart School System - Guardian Dashboard</title>
+    <link rel="icon" type="image/webp" href="assets/image/sksmLOGO.webp">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="assets/css/validate.css" />
 
-  <body>
+    <style>
+        body {
+            background-color: #f8f9fa; 
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-container {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            height: auto; 
+    		overflow: visible;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            font-size: 0.9rem;
+            color: #8c8279;
+            margin-bottom: 10px;
+        }
+
+        .current-page {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Card Grid Layout */
+        .student-card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        /* Modernized Student Card */
+        .student-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .student-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .student-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+
+        .student-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Badge/Tag styling */
+        .student-meta {
+            margin-bottom: 25px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #fdfaf8;
+            color: #8c8279;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #e7d6c8;
+            margin: 2px;
+        }
+
+        /* Button Styling */
+        .see-more-btn {
+            background-color: #8c8279; /* Use your theme brown */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            width: 80%;
+        }
+
+        .see-more-btn:hover {
+            background-color: #746260;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+
+<body>
+
     <header class="header">
-      <div class="header-left">
-        <i class="fas fa-bars menu-toggle-icon" id="menu-toggle"></i>
-        <span>Smart School System</span>
-      </div>
-      <div class="header-right">
-        <div class="profile-area" id="profileBtn">
-          <span class="user-name">Guardian</span>
-          <img
-            src="../assets/image/adminICON.png"
-            alt="Admin Profile"
-            class="profile-image"
-          />
+        <div class="header-left">
+            <i style="margin-right: 10px;"></i>
+            <span>Smart School System</span>
         </div>
-        <div class="profile-menu" id="profileMenu">
-          <p id="darkToggle"><i class="fas fa-moon"></i> Dark Mode</p>
-          <p id="logoutOption"><i class="fas fa-sign-out-alt"></i> Logout</p>
+
+        <div class="header-right">
+            <div class="profile-area" id="profileBtn" style="cursor: pointer;">
+                <span class="user-name">Guardian</span> 
+                <img src="assets/image/adminICON.png" class="profile-image" />
+            </div>
+
+            <div class="profile-menu" id="profileMenu" style="display: none;">
+                <p id="logoutOption" style="cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </p>
+            </div>
         </div>
-      </div>
     </header>
 
-    <div class="main-container">
-      <aside class="sidebar" id="sidebar">
-        <ul class="sidebar-menu">
-          <li>
-            <a href="guardianHomepage.html" class="menu-item"
-              ><i class="fas fa-home icon"></i>
-              <span class="link-text">Home</span></a
-            >
-          </li>
-        </ul>
-      </aside>
+    <div class="main-container" style="background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
+             url('assets/image/background2.jpg') no-repeat center center fixed; 
+             background-size: cover; min-height: 120vh;">
+    
+        <div class="content-wrapper">
+            <div class="student-card-container">
+                
+                <div class="student-card">
+                    <img src="assets/image/adminICON.png" class="student-photo" />
+                    <div class="student-name">Ahmad bin Ali</div>
+                    <div class="student-meta">
+                        <span class="tag">Year 4</span>
+                    </div>
+                    <button class="see-more-btn"
+                        onclick="location.href='StudentProfileServlet?id=010203045566'">
+                        SEE PROFILE
+                    </button>
+                </div>
 
-      <main class="content">
-        <div class="breadcrumb">
-          Hi, Guardian <span class="breadcrumb-separator">&gt;</span>
-          <span class="current-page">Dashboard</span>
-        </div>
+                <div class="student-card">
+                    <img src="assets/image/adminICON.png" class="student-photo" />
+                    <div class="student-name">Siti binti Ali</div>
+                    <div class="student-meta">
+                        <span class="tag">Year 2</span>
+                    </div>
+                    <button class="see-more-btn"
+                        onclick="location.href='StudentProfileServlet?id=040506078899'">
+                        SEE PROFILE
+                    </button>
+                </div>
 
-        <div class="student-card-container">
-          <div class="student-card">
-            <div class="image-student-wrapper">
-              <img
-                src="../assets/image/adminICON.png"
-                alt="Student Photo"
-                class="student-photo"
-              />
-            </div>
-            <h3 class="student-name">ISMID SUMBUL BIN FARIS</h3>
-            <button
-              class="see-more-btn"
-              onclick="location.href='studentProfile.html'"
-            >
-              SEE MORE
-            </button>
-          </div>
+                </div>
         </div>
-      </main>
     </div>
 
-    <div id="logoutModal" class="modal-overlay">
-      <div class="modal-box">
-        <h3>Confirm Logout</h3>
-        <p>Do you want to logout from this account?</p>
-        <div class="modal-buttons">
-          <button class="modal-btn btn-cancel" id="cancelLogout">Cancel</button>
-          <button class="modal-btn btn-reject" id="confirmLogout">
-            Logout
-          </button>
-        </div>
-      </div>
-    </div>
+	<div id="logoutModal" class="modal-overlay">
+		<div class="modal-box">
+			<h3>Confirm Logout</h3>
+			<p>Do you want to logout from this account?</p>
+			<div class="modal-buttons">
+				<button class="modal-btn btn-cancel" id="cancelLogout">Cancel</button>
+				<button class="modal-btn btn-reject" id="confirmLogout">Logout</button>
+			</div>
+		</div>
+	</div>
 
     <script>
-      // Sidebar Toggle
-      const menuToggle = document.getElementById("menu-toggle");
-      const sidebar = document.getElementById("sidebar");
-      menuToggle.addEventListener("click", () => {
-        sidebar.classList.toggle("collapsed");
-      });
+        // Profile Menu Logic
+        const profileBtn = document.getElementById("profileBtn");
+        const profileMenu = document.getElementById("profileMenu");
 
-      // Profile Menu Toggle
-      const profileBtn = document.getElementById("profileBtn");
-      const profileMenu = document.getElementById("profileMenu");
-      profileBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        profileMenu.style.display =
-          profileMenu.style.display === "block" ? "none" : "block";
-      });
+        profileBtn.onclick = (e) => {
+            e.stopPropagation();
+            profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
+        };
 
-      // Close dropdown on outside click
-      window.addEventListener("click", () => {
-        profileMenu.style.display = "none";
-      });
+        // Close menu when clicking anywhere else
+        window.onclick = () => {
+            profileMenu.style.display = "none";
+        };
 
-      // Logout
-      const logoutOption = document.getElementById("logoutOption");
-      const logoutModal = document.getElementById("logoutModal");
-      const cancelLogout = document.getElementById("cancelLogout");
-      const confirmLogout = document.getElementById("confirmLogout");
+        // Logout 
+        const logoutOption = document.getElementById('logoutOption');
+        const logoutModal = document.getElementById('logoutModal');
+        const cancelLogout = document.getElementById('cancelLogout');
+        const confirmLogout = document.getElementById('confirmLogout');
 
-      logoutOption.addEventListener(
-        "click",
-        () => (logoutModal.style.display = "flex")
-      );
-      cancelLogout.addEventListener(
-        "click",
-        () => (logoutModal.style.display = "none")
-      );
-      confirmLogout.addEventListener(
-        "click",
-        () => (window.location.href = "../choice.html")
-      );
-
-      // Dark Mode Toggle
-      document.getElementById("darkToggle").addEventListener("click", () => {
-        document.body.classList.toggle("dark-theme");
-      });
+        logoutOption.addEventListener('click', () => logoutModal.style.display = 'flex');
+        cancelLogout.addEventListener('click', () => logoutModal.style.display = 'none');
+        confirmLogout.addEventListener('click', () => window.location.href = '../choice.html');
     </script>
-  </body>
+
+</body>
 </html>

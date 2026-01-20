@@ -360,29 +360,6 @@ body {
   }
 }
 
-/* --- Dark Mode Support --- */
-body.dark-theme {
-  background-color: #1a1a1a;
-  color: #fff;
-}
-
-body.dark-theme .content {
-  background-color: #242424;
-}
-
-body.dark-theme .dashboard-card,
-body.dark-theme .stat-item {
-  background-color: #2d2d2d;
-  border-color: #444;
-  color: white;
-}
-
-body.dark-theme .stat-value,
-body.dark-theme .dashboard-card p,
-body.dark-theme .breadcrumb {
-  color: #eee;
-}
-
 /* --- Table Styling (New) --- */
 .table-box {
   margin-top: 20px;
