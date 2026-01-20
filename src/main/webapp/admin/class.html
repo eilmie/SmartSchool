@@ -217,7 +217,7 @@
             const year = document.getElementById('yearSelector').value;
             
             // Fetch JSON from Servlet
-            fetch(`ClassServlet?action=getData&year=${year}`)
+            fetch(`admin/ClassServlet?action=getData&year=${year}`)
                 .then(response => response.json())
                 .then(data => {
                     renderTable(data.classes);
