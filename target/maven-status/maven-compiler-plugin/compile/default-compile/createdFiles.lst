@@ -27,3 +27,4 @@ com\smartschool\model\Attendance.class
 com\smartschool\SmartSchoolApplication.class
 com\smartschool\controller\AdminStatsServlet.class
 com\smartschool\controller\ValidationServlet.class
+com\smartschool\controller\ClassServlet.class
