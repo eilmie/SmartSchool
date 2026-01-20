@@ -27,7 +27,7 @@ public class GuardianLoginServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("guardian", guardian);
 
-			response.sendRedirect(request.getContextPath() + "/guardian/guardianHomepage.jsp");
+			response.sendRedirect(request.getContextPath() + "/guardian/guardianHomepage.html");
 		} else {
 			response.sendRedirect(request.getContextPath() + "/guardian/guardianLogin.html?error=1");
 		}
