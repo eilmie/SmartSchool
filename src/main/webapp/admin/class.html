@@ -214,18 +214,20 @@
 
         // --- 2. DATA FETCHING ---
         function loadClassData() {
-            const year = document.getElementById('yearSelector').value;
-            
-            // Fetch JSON from Servlet
-            fetch(`admin/ClassServlet?action=getData&year=${year}`)
-                .then(response => response.json())
-                .then(data => {
-                    renderTable(data.classes);
-                    allTeachers = data.teachers; // Store teachers for modals
-                    populateTeacherDropdowns(data.teachers);
-                })
-                .catch(err => console.error('Error loading data:', err));
-        }
+    // 1. Path is now just 'ClassServlet' because the HTML and Servlet are in the same folder
+    // 2. Year filter removed as requested
+    fetch(`ClassServlet?action=getData`) 
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            renderTable(data.classes);
+            // This fills the dropdown in your "Add Class" modal
+            populateTeacherDropdowns(data.teachers); 
+        })
+        .catch(err => console.error('Error fetching teachers:', err));
+}
 
         function renderTable(classes) {
             const tbody = document.getElementById('classTableBody');
