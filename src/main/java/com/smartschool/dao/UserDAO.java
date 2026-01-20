@@ -1162,7 +1162,7 @@ public class UserDAO {
 		     int newId = 0;
 		     
 		     // 1. Get Sequence ID
-		     String seqSql = "SELECT USERS_SEQ.NEXTVAL FROM DUAL";
+		     String seqSql = "SELECT NEXTVAL('user_id_seq')";
 		     try (PreparedStatement psSeq = conn.prepareStatement(seqSql);
 		          ResultSet rs = psSeq.executeQuery()) {
 		         if (rs.next()) {
