@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart School System - Student List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/studentList.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <i class="fas fa-bars menu-toggle-icon" id="menu-toggle"></i>
+            <span>Smart School System</span>
+        </div>
+        <div class="header-right">
+            <div class="profile-area" id="profileBtn">
+                <span class="user-name">Admin</span>
+                <img src="assets/image/adminICON.png" alt="Admin" class="profile-image">
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar" id="sidebar">
+            <ul class="sidebar-menu">
+              <li><a href="adminHomepage.html" class="menu-item "><i class="fas fa-home icon"></i> <span class="link-text">Home</span></a></li>
+                <li><a href="class.html" class="menu-item"><i class="fas fa-chalkboard icon"></i> <span class="link-text">Class</span></a></li>
+                <li><a href="student.html" class="menu-item active"><i class="fas fa-user-graduate icon"></i> <span class="link-text">Student</span></a></li>
+                <li><a href="validateTeacher.html" class="menu-item"><i class="fas fa-user-check icon"></i> <span class="link-text">Validate</span></a></li>
+                <li><a href="teacherList.html" class="menu-item"><i class="fas fa-users-rectangle icon"></i> <span class="link-text">Teacher List</span></a></li>
+                <li><a href="assignment.html" class="menu-item"><i class="fas fa-tasks icon"></i> <span class="link-text">Assignment</span></a></li>
+                <li><a href="adminSettings.html" class="menu-item"><i class="fas fa-cog icon"></i> <span class="link-text">Settings</span></a></li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            <div class="breadcrumb">
+                Hi, Admin <span class="breadcrumb-separator">&gt;</span> <span class="current-page">Student List</span>
+            </div>
+
+            <div class="card">
+                <div class="card-header-actions">
+                    <button class="btn-custom btn-new" onclick="window.location.href='addStudent.html'">
+                        <i class="fas fa-plus"></i> New Student
+                    </button>
+                </div>
+
+                <div class="controls-row">
+                    <div class="filter-group">
+                        <label class="filter-label">Filter by Year</label>
+                        <select id="searchYear" class="styled-select" onchange="loadStudents()">
+                            <option value="">All Years</option>
+                            <option value="4">Year 1</option>
+                            <option value="4">Year 2</option>
+                            <option value="4">Year 3</option>
+                            <option value="4">Year 4</option>
+                            <option value="5">Year 5</option>
+                            <option value="6">Year 6</option>
+                        </select>
+                    </div>
+
+                    <div class="search-container">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search Name or IC..." onkeyup="searchStudent()">
+                        <i class="fas fa-magnifying-glass"></i>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="studentTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">No.</th>
+                                <th>Name</th>
+                                <th>IC Number</th>
+                                <th>Class</th>
+                                <th>Address</th>
+                                <th>Gender</th>
+                                <th>Date of Birth</th>
+                                <th style="width: 100px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody">
+                            </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <button class="btn-custom btn-del-all" onclick="deleteAllStudents()">
+                        <i class="fas fa-trash"></i> Delete All
+                    </button>
+                </div>
+            </div>
+            
+            <div id="toastNotification" class="notification-toast">Message</div>
+        </main>
+    </div>
+
+    <div id="deleteConfirmModal" class="modal-overlay">
+        <div class="beige-modal" style="text-align: center;">
+            <span class="close-icon" onclick="closeModals()">&times;</span>
+            <h3>Are You Sure?</h3>
+            <p id="modalMessage">Do you want to delete this student?</p>
+            <div id="doubleConfirmContainer" style="display: none; margin-bottom: 20px;">
+                <p>Type <strong>DELETE</strong> to confirm:</p>
+                <input type="text" id="confirmInput" placeholder="DELETE" class="edit-input" style="text-align: center;">
+                <p id="inputError" style="color: red; display: none;">Incorrect word. Try again.</p>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" onclick="closeModals()" style="background-color: #ccc;">Cancel</button>
+                <button type="button" onclick="confirmDelete()" style="background-color: #d9534f; color: white;">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables for delete logic [cite: 44]
+        let idToDelete = null;
+        let isDeleteAll = false;
+        const confirmModal = document.getElementById('deleteConfirmModal');
+        const modalMessage = document.getElementById('modalMessage');
+
+        // 1. DATA FETCHING (The most important update)
+        window.onload = function() {
+            loadStudents();
+            checkUrlStatus();
+        };
+
+        function loadStudents() {
+            const year = document.getElementById('searchYear').value;
+            const url = `StudentListServlet?action=list${year ? '&searchYear=' + year : ''}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById("studentTableBody");
+                    tableBody.innerHTML = ""; 
+
+                    if (data.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">No students found.</td></tr>';
+                        return;
+                    }
+
+                    data.forEach((s, index) => {
+                        const row = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${s.studName}</td>
+                                <td>${s.studIC}</td>
+                                <td>${s.className || 'N/A'}</td>
+                                <td>${s.address}</td>
+                                <td>${s.studGender}</td>
+                                <td>${s.dateOfBirth || '-'}</td>
+                                <td class="action-cell">
+                                    <div class="action-btn delete-btn" onclick="deleteSingleStudent(this, '${s.studIC}')">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </div>
+                                </td>
+                            </tr>`;
+                        tableBody.innerHTML += row;
+                    });
+                })
+                .catch(err => console.error("Error loading students:", err));
+        }
+
+        // 2. SEARCH LOGIC (Kept from original) [cite: 38-42]
+        function searchStudent() {
+            var filter = document.getElementById("searchInput").value.toUpperCase();
+            var tr = document.getElementById("studentTableBody").getElementsByTagName("tr");
+            for (var i = 0; i < tr.length; i++) {
+                var tdName = tr[i].getElementsByTagName("td")[1];
+                var tdIC = tr[i].getElementsByTagName("td")[2];
+                if (tdName || tdIC) {
+                    var nameValue = tdName.textContent || tdName.innerText;
+                    var icValue = tdIC.textContent || tdIC.innerText;
+                    tr[i].style.display = (nameValue.toUpperCase().indexOf(filter) > -1 || icValue.toUpperCase().indexOf(filter) > -1) ? "" : "none";
+                }
+            }
+        }
+
+        // 3. DELETE LOGIC (Updated to work with Fetch data) [cite: 44-57]
+        function deleteSingleStudent(element, ic) {
+            isDeleteAll = false;
+            idToDelete = ic;
+            modalMessage.innerText = "Delete student with IC: " + ic + "?";
+            document.getElementById('doubleConfirmContainer').style.display = 'none';
+            confirmModal.style.display = 'flex';
+        }
+
+        function deleteAllStudents() {
+            const year = document.getElementById('searchYear').value;
+            isDeleteAll = true;
+            modalMessage.innerText = year ? `WARNING: Delete ALL Year ${year} students?` : "WARNING: Delete EVERY student?";
+            document.getElementById('doubleConfirmContainer').style.display = 'block';
+            document.getElementById('confirmInput').value = "";
+            confirmModal.style.display = 'flex';
+        }
+
+        function confirmDelete() {
+            if (isDeleteAll) {
+                if (document.getElementById('confirmInput').value !== "DELETE") {
+                    document.getElementById('inputError').style.display = 'block';
+                    return;
+                }
+                const year = document.getElementById('searchYear').value;
+                window.location.href = `StudentListServlet?action=deleteAll${year ? '&year=' + year : ''}`;
+            } else {
+                window.location.href = `StudentListServlet?action=delete&studIC=${idToDelete}`;
+            }
+        }
+
+        function closeModals() { confirmModal.style.display = 'none'; }
+
+        // 4. TOAST NOTIFICATIONS [cite: 59-64]
+        function checkUrlStatus() {
+            const status = new URLSearchParams(window.location.search).get('status');
+            if (status) {
+                const toast = document.getElementById("toastNotification");
+                toast.innerText = (status === 'success') ? "✅ Deletion Successful!" : "❌ Action Failed.";
+                toast.className = "notification-toast show " + (status === 'success' ? 'success' : 'error');
+                setTimeout(() => toast.classList.remove("show"), 3000);
+            }
+        }
+
+        const menuToggle = document.getElementById('menu-toggle');
+        if (menuToggle) menuToggle.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('collapsed'));
+    </script>
+</body>
+</html>
