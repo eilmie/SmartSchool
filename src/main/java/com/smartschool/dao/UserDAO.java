@@ -12,7 +12,6 @@ import com.smartschool.model.TeacherAssign;
 import com.smartschool.model.User;
 import com.smartschool.model.Guardian;
 import com.smartschool.model.Subject;
-import com.smartschool.util.OracleDBConnection;
 import com.smartschool.util.PostgresConnection;
 import java.text.SimpleDateFormat;
 
@@ -720,7 +719,7 @@ public class UserDAO {
 	                 "WHERE TEACHER_ID NOT IN (SELECT TEACHER_ID FROM CLASSROOM WHERE TEACHER_ID IS NOT NULL) " +
 	                 "AND STATUS = 'approved'"; 
 
-	    try (Connection conn = OracleDBConnection.getConnection();
+	    try (Connection conn = PostgresConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql);
 	         ResultSet rs = ps.executeQuery()) {
 	        
