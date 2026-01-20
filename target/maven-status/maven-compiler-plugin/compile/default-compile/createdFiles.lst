@@ -11,6 +11,7 @@ com\smartschool\model\Classroom.class
 com\smartschool\model\Subject.class
 com\smartschool\controller\StudentController.class
 com\smartschool\controller\StudentListServlet.class
+com\smartschool\controller\ManageAttendanceServlet.class
 com\smartschool\controller\LogoutServlet.class
 com\smartschool\util\OracleDBConnection.class
 com\smartschool\model\Examination.class

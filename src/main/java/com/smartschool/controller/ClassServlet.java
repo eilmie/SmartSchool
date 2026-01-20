@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.smartschool.dao.UserDAO;
 import com.smartschool.model.Classroom;
 import com.smartschool.model.Teacher;
-import com.smartschool.util.OracleDBConnection;
+import com.smartschool.util.PostgresConnection;
 
 // CHANGED: Mapped to /admin/ so you don't need ".." in your HTML paths
 @WebServlet("/admin/ClassServlet") 
@@ -62,7 +62,7 @@ public class ClassServlet extends HttpServlet {
         // --- EXISTING DELETE LOGIC (Updated Redirect) ---
         if ("delete".equals(action)) {
             String classId = request.getParameter("classId");
-            try (Connection conn = OracleDBConnection.getConnection()) {
+            try (Connection conn = PostgresConnection.getConnection()) {
                 // Delete assignments first (Foreign Key constraint)
                 String deleteAssignmentsSql = "DELETE FROM TEACHER_ASSIGNMENT WHERE CLASS_ID = ?";
                 try (PreparedStatement ps1 = conn.prepareStatement(deleteAssignmentsSql)) {
@@ -89,7 +89,7 @@ public class ClassServlet extends HttpServlet {
         
         String action = request.getParameter("action");
         
-        try (Connection conn = OracleDBConnection.getConnection()) {
+        try (Connection conn = PostgresConnection.getConnection()) {
             if ("add".equals(action)) {
                 String sql = "INSERT INTO CLASSROOM (CLASS_NAME, ACADEMIC_YEAR, TEACHER_ID) VALUES (?, ?, ?)";
                 PreparedStatement ps = conn.prepareStatement(sql);

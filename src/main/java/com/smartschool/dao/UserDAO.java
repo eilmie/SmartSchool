@@ -1314,4 +1314,33 @@ public class UserDAO {
 				  }
 				  return students;
 				 }
+			public List<String> getAttendanceByMonth(int classId, String month, String year) {
+			    List<String> dates = new ArrayList<>();
+			    
+			    // SQL: Select unique dates for a specific class within a month/year range
+			    // We use TO_CHAR to format the date for comparison and display
+			    String sql = "SELECT DISTINCT TO_CHAR(ATTENDANCE_DATE, 'YYYY-MM-DD') AS ATT_DATE " +
+			                 "FROM ATTENDANCE " +
+			                 "WHERE CLASS_ID = ? " +
+			                 "AND TO_CHAR(ATTENDANCE_DATE, 'MM') = ? " +
+			                 "AND TO_CHAR(ATTENDANCE_DATE, 'YYYY') = ? " +
+			                 "ORDER BY ATT_DATE DESC";
+
+			    try (Connection conn = PostgresConnection.getConnection();
+			         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			        ps.setInt(1, classId);
+			        ps.setString(2, month); // Expecting "01", "02", etc.
+			        ps.setString(3, year);  // Expecting "2025", "2026", etc.
+
+			        try (ResultSet rs = ps.executeQuery()) {
+			            while (rs.next()) {
+			                dates.add(rs.getString("ATT_DATE"));
+			            }
+			        }
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			    }
+			    return dates;
+			}
 }
