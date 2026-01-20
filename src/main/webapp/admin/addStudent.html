@@ -90,59 +90,90 @@
     </div>
 
     <script>
-        // 1. DATA LOADER: Fetches classrooms from server
+        // 1. DATA LOADER: Point to the LEGACY path so it hits the Servlet directly
+        // We use '/admin/AddStudentServlet' to bypass the API Gateway rewrite
         window.onload = function() {
-		    fetch('/admin/StudentListServlet?action=showAddForm')
-		        .then(res => res.json())
-		        .then(data => {
-		            const select = document.getElementById('classSelect');
-		            // Important: Use capital 'C' to match your JSON data
-		            data.forEach(c => {
-		                let opt = document.createElement('option');
-		                opt.value = c.ClassID;      // Changed from classID to ClassID
-		                opt.textContent = c.ClassName; // Changed from className to ClassName
-		                opt.setAttribute('data-level', c.ClassYear); // Changed to ClassYear
-		                select.appendChild(opt);
-		            });
-		        })
-		        .catch(err => console.error("Error loading classes:", err));
-		};
+            fetch('/admin/AddStudentServlet?action=showAddForm') 
+                .then(res => res.json())
+                .then(data => {
+                    const select = document.getElementById('classSelect');
+                    data.forEach(c => {
+                        let opt = document.createElement('option');
+                        
+                        // Safety Check: Handles both "ClassID" (Upper) and "classID" (camelCase)
+                        // This ensures it works whether Gson or Jackson generates the JSON
+                        opt.value = c.ClassID || c.classID; 
+                        opt.textContent = c.ClassName || c.className;
+                        
+                        // Set the year level for filtering
+                        opt.setAttribute('data-level', c.ClassYear || c.classYear); 
+                        select.appendChild(opt);
+                    });
+                })
+                .catch(err => console.error("Error loading classes:", err));
+        };
 
-        // 2. Original Logic: Sidebar, IC Extraction, and Validation [cite: 103-125]
+        // 2. CLEANED IC LOGIC
+        // Removed the broken duplicate function that used 'cleanIC'
         function extractDateFromIC() {
-            var val = document.getElementById("studIC").value.replace(/[^0-9]/g, '');
-            if (cleanIC.length >= 6) {
-                var yy = cleanIC.substring(0, 2), mm = cleanIC.substring(2, 4), dd = cleanIC.substring(4, 6);
-                var fullYear = (parseInt(yy) > 30 ? "19" : "20") + yy;
-                document.getElementById("dob").value = fullYear + "-" + mm + "-" + dd;
-            }
-        }
-
-        function extractDateFromIC() {
-            const icInput = document.getElementById("studIC"); // 
-            const dobInput = document.getElementById("dob"); // 
-            let val = icInput.value.replace(/[^0-9]/g, ''); // [cite: 111]
+            const icInput = document.getElementById("studIC"); 
+            const dobInput = document.getElementById("dob"); 
+            
+            // Remove non-numeric characters
+            let val = icInput.value.replace(/[^0-9]/g, ''); 
 
             if (val.length >= 6) {
-                let yy = val.substring(0, 2); // [cite: 112]
-                let mm = val.substring(2, 4); // [cite: 112]
-                let dd = val.substring(4, 6); // [cite: 112]
+                let yy = val.substring(0, 2); 
+                let mm = val.substring(2, 4); 
+                let dd = val.substring(4, 6); 
 
-                // Logic to determine century [cite: 113]
+                // Logic to determine century (e.g., 04 -> 2004, 99 -> 1999)
                 let prefix = (parseInt(yy) > 30) ? "19" : "20"; 
-                let fullYear = prefix + yy; // [cite: 113]
+                let fullYear = prefix + yy; 
                 
-                // Final format must be YYYY-MM-DD for HTML5 date inputs [cite: 114]
+                // Final format must be YYYY-MM-DD for HTML5 date inputs
                 dobInput.value = `${fullYear}-${mm}-${dd}`; 
             }
         }
 
-        // 3. Modal Controls [cite: 126-129]
-        function validateForm() {
-            document.getElementById('confirmAddModal').style.display = 'flex';
-            return false; 
+        // 3. FILTER LOGIC for the Class Dropdown
+        function filterClassDropdown() {
+            const selectedYear = document.getElementById("yearSelect").value;
+            const classSelect = document.getElementById("classSelect");
+            const options = classSelect.options;
+
+            for (let i = 0; i < options.length; i++) {
+                const opt = options[i];
+                // Always show the default "-- Select Class --" option (value "")
+                if (opt.value === "") {
+                    opt.style.display = ""; 
+                    continue;
+                }
+                
+                // Show option only if it matches the selected year
+                const level = opt.getAttribute('data-level');
+                if (selectedYear === "" || level == selectedYear) {
+                    opt.style.display = "";
+                } else {
+                    opt.style.display = "none";
+                }
+            }
+            // Reset selection when year changes
+            classSelect.value = ""; 
         }
-        function closeConfirmAddModal() { document.getElementById('confirmAddModal').style.display = 'none'; }
+
+        // 4. MODAL CONTROLS
+        function validateForm() {
+            // Show the confirmation modal instead of submitting immediately
+            document.getElementById('confirmAddModal').style.display = 'flex';
+            return false; // Prevent default form submission
+        }
+
+        function closeConfirmAddModal() { 
+            document.getElementById('confirmAddModal').style.display = 'none'; 
+        }
+
+        // Trigger the real form submission when "Confirm" is clicked in the modal
         document.getElementById('finalSubmitBtn').addEventListener('click', () => {
             document.getElementById('addStudentForm').submit();
         });

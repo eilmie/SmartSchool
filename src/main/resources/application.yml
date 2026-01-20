@@ -1,13 +1,8 @@
-server:
-  port: 8080
-
 spring:
-  application:
-    name: gateway-service
   cloud:
     gateway:
       routes:
-        # Route for the new Student List Microservice
+        # 1. Existing Route (Microservice List) - KEEPS REWRITING
         - id: student-list-service
           uri: lb://STUDENT-SERVICE
           predicates:
@@ -15,16 +10,10 @@ spring:
           filters:
             - RewritePath=/admin/StudentListServlet(?<remaining>.*), /api/students$\{remaining}
 
-        # NEW ROUTE: For your original Add Student Monolith Servlet
+        # 2. NEW ROUTE (Monolith Add) - NO REWRITE
         - id: student-add-monolith
           uri: lb://STUDENT-SERVICE
           predicates:
             - Path=/admin/AddStudentServlet/**
-          # No RewritePath filter here because it needs to hit the real Servlet name
-
-eureka:
-  client:
-    service-url:
-      defaultZone: https://radiant-taiga-56597.herokuapp.com/eureka/
-    register-with-eureka: true
-    fetch-registry: true
+          # Important: No RewritePath filter here! 
+          # This ensures the request hits the @WebServlet("/admin/AddStudentServlet") we just added.
