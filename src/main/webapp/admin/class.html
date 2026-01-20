@@ -268,18 +268,17 @@
             const addSelect = document.getElementById('addTeacherSelect');
             const editSelect = document.getElementById('editClassTeacher');
             
-            // Keep the first default option
             addSelect.innerHTML = '<option value="">-- Select Teacher (Optional) --</option>';
             editSelect.innerHTML = '<option value="">-- No Teacher Assigned --</option>';
 
             teachers.forEach(t => {
-                const opt1 = document.createElement('option');
-                opt1.value = t.teacherId || t.teacherID || t.TeacherId || t.TeacherID;
-                opt1.textContent = t.teacherName || t.TeacherName;
-                addSelect.appendChild(opt1);
-
-                const opt2 = opt1.cloneNode(true);
-                editSelect.appendChild(opt2);
+                const opt = document.createElement('option');
+                // This handles teacherId, teacherID, TeacherID, etc.
+                opt.value = t.teacherId || t.teacherID || t.TeacherID || t.TeacherId;
+                opt.textContent = t.teacherName || t.TeacherName || t.name;
+                
+                addSelect.appendChild(opt);
+                editSelect.appendChild(opt.cloneNode(true));
             });
         }
 
